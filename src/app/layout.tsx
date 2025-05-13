@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NED Stack",
+  title: "Create NED Stack",
   description: "Generate a ned stack",
 };
 
