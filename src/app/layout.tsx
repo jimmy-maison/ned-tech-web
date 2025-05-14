@@ -22,10 +22,8 @@ export const metadata: Metadata = {
     siteName: "NED Stack",
     images: [
       {
-        url: "https://ned-tech-web.pages.dev/img/landing.png",
+        url: "https://ned-tech-web.pages.dev/img/logo.png",
         alt: "NED Stack Preview Image",
-        width: 1800,         
-        height: 709,
       },
     ],
     locale: "en_US",
