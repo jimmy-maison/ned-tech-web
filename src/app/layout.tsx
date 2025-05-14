@@ -24,8 +24,8 @@ export const metadata: Metadata = {
       {
         url: "https://ned-tech-web.pages.dev/img/landing.png",
         alt: "NED Stack Preview Image",
-        width: 1200,         
-        height: 630,
+        width: 1800,         
+        height: 709,
       },
     ],
     locale: "en_US",
