@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TbBrandNextjs, TbDatabase } from "react-icons/tb";
 import { SiBun } from "react-icons/si";
 import { FaRegCopy, FaCheck } from "react-icons/fa";
+import { HiOutlineCommandLine } from "react-icons/hi2";
 
 const techStack = [
   {
@@ -189,6 +190,16 @@ const Page = () => {
         >
           Next <span className="text-blue-400">•</span> Elysia <span className="text-yellow-400">•</span> Drizzle
         </motion.h1>
+        <motion.a
+          href="/docs"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-800/50"
+        >
+          <HiOutlineCommandLine className="w-5 h-5" />
+          <span className="hidden sm:inline">Documentation</span>
+        </motion.a>
       </header>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-4 md:px-20 text-center mt-24 md:mt-32">
