@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TbBrandNextjs, TbDatabase } from "react-icons/tb";
 import { SiBun } from "react-icons/si";
 import { FaRegCopy, FaCheck } from "react-icons/fa";
@@ -163,17 +163,15 @@ const Page = () => {
 
   const cardHoverWithTiltVariants = {
     hover: (color: string) => ({
-      scale: 1.05,
-      rotateX: 6,
-      rotateY: 10,
-      boxShadow: `0px 15px 30px -10px ${color}55`,
+      scale: 1.08,
+      y: -10,
+      boxShadow: `0px 20px 40px -15px ${color}66`,
       borderColor: color,
-      transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 12 }
+      transition: { duration: 0.25, type: "spring", stiffness: 180, damping: 14 }
     }),
     rest: {
       scale: 1,
-      rotateX: 0,
-      rotateY: 0,
+      y: 0,
       boxShadow: "0px 8px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)",
       borderColor: "rgba(255, 255, 255, 0.1)",
       transition: { duration: 0.3, type: "spring", stiffness: 100, damping: 15 }
@@ -215,15 +213,45 @@ const Page = () => {
           animate="visible"
         >
           {techStack.map((tech) => {
-            const TechIcon = tech.icon; 
+            const TechIcon = tech.icon;
+            const cardRef = useRef<HTMLDivElement>(null);
+            const springConfig = { stiffness: 150, damping: 20, mass: 0.5 };
+            const rotateX = useSpring(0, springConfig);
+            const rotateY = useSpring(0, springConfig);
+            const MAX_TILT = 12; // degrees
+
+            const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+              if (!cardRef.current) return;
+              const rect = cardRef.current.getBoundingClientRect();
+              const mouseXInCard = event.clientX - rect.left;
+              const mouseYInCard = event.clientY - rect.top;
+              const percentX = (mouseXInCard / rect.width - 0.5) * 2;
+              const percentY = (mouseYInCard / rect.height - 0.5) * 2;
+              rotateX.set(-percentY * MAX_TILT);
+              rotateY.set(percentX * MAX_TILT);
+            };
+
+            const handleMouseLeave = () => {
+              rotateX.set(0);
+              rotateY.set(0);
+            };
+            
             return (
               <motion.div
                 key={tech.id}
+                ref={cardRef}
                 className="group bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg flex flex-col items-center text-center cursor-pointer transform transition-all duration-300 border border-transparent"
                 variants={cardHoverWithTiltVariants}
                 whileHover="hover"
                 initial="rest"
                 custom={tech.color}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  rotateX,
+                  rotateY,
+                  transformPerspective: '1000px'
+                }}
               >
                 <motion.div whileHover={{ scale: 1.1, rotate: -4 }} transition={{ type: 'spring', stiffness: 300, damping: 10}}>
                   <TechIcon className="w-10 h-10 sm:w-12 sm:h-12 mb-4 sm:mb-5 group-hover:scale-110 transition-transform duration-300" style={{ color: tech.color }}/>
@@ -240,20 +268,23 @@ const Page = () => {
           animate={{ opacity: 1, y: 0}}
           transition={{ duration: 0.5, delay: techStack.length * 0.2 + 0.6 }} 
         >
-          <div
-            className="font-mono text-xs sm:text-base text-left bg-gray-800 border border-gray-700 rounded-lg p-3 sm:p-4 shadow-xl sm:shadow-2xl cursor-pointer hover:border-pink-500 transition-colors duration-300 flex items-center justify-between group relative max-w-md sm:max-w-xl md:max-w-2xl mx-auto"
+          <motion.div
+            className="font-mono text-xs sm:text-base text-left bg-gray-800 border border-gray-700 rounded-lg p-3 sm:p-4 shadow-xl sm:shadow-2xl cursor-pointer flex items-center justify-between group relative max-w-md sm:max-w-xl md:max-w-2xl mx-auto"
             onClick={handleNpmCopy}
+            whileHover={{ scale: 1.02, borderColor: "#ec4899" }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <div className="flex-grow overflow-x-auto whitespace-nowrap scrollbar-hide">
               <span className="text-green-400">$</span> <span className="text-gray-300">npx create-ned-tech test-project</span>
             </div>
             <button 
               aria-label={npmCopied ? "Copied" : "Copy to clipboard"} 
-              className="text-gray-400 hover:text-pink-400 transition-colors duration-200 p-1 -ml-1 sm:-mr-1 flex-shrink-0"
+              className="text-gray-400 hover:text-pink-400 transition-colors duration-200 p-1 ml-2 flex-shrink-0"
             >
               {npmCopied ? <FaCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 animate-pulse" /> : <FaRegCopy className="w-4 h-4 sm:w-5 sm:h-5" />}
             </button>
-          </div>
+          </motion.div>
         </motion.div>
         
         <div className="w-full max-w-7xl mx-auto mt-12 md:mt-16"> 
