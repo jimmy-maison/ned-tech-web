@@ -14,19 +14,33 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Create NED Stack",
-  description: "Generate a ned stack",
+  description: "A modern full-stack setup with Next.js, Elysia.js, and Drizzle ORM for performant and type-safe web applications.",
+  openGraph: {
+    title: "Create NED Stack",
+    description: "A modern full-stack setup with Next.js, Elysia.js, and Drizzle ORM for performant and type-safe web applications.",
+    url: "https://ned-tech-web.pages.dev/",
+    siteName: "NED Stack",
+    images: [
+      {
+        url: "https://ned-tech-web.pages.dev/img/landing.png",
+        width: 1200,
+        height: 630,
+        alt: "NED Stack Preview Image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
