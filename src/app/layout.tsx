@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Create NED Stack",
   description: "A modern full-stack setup with Next.js, Elysia.js, and Drizzle ORM for performant and type-safe web applications.",
+  icons: {
+    icon: "/img/logo.png"
+  },
   openGraph: {
     title: "Create NED Stack",
     description: "A modern full-stack setup with Next.js, Elysia.js, and Drizzle ORM for performant and type-safe web applications.",
